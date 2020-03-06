@@ -30,9 +30,9 @@ int main() {
     float podatek = 0.01 * proc * cena_netto;
     float cena_brutto = cena_netto  + cena_netto * 0.01 * proc;
 
-    printf("Wartosc netto zakupionego towaru: %f \n", cena_netto);
-    printf("Wartosc podatku VAT: %f \n", podatek);
-    printf("Wartosc towaru brutto: %f", cena_brutto);
+    printf("Wartosc netto zakupionego towaru: %g \n", cena_netto);
+    printf("Wartosc podatku VAT: %g \n", podatek);
+    printf("Wartosc towaru brutto: %g", cena_brutto);
 
     return 0;
 }
