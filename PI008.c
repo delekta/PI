@@ -1,6 +1,7 @@
 //
 // Created by Kamil Delekta on 12.03.2020.
 //
+// Laczenie tablic
 //Dane są dwie tablice liczb całkowitych, T1 i T2, o długościach odpowiednio m i n. Napisz
 //program, który na wejściu otrzymuje wartości obu tablic i sortuje je rosnąco. Następnie
 //utwórz nową tablicę, T3, o długości co najwyżej m + n, która powstaje przez połączenie

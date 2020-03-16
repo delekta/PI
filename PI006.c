@@ -1,6 +1,7 @@
 //
 // Created by Kamil Delekta on 12.03.2020.
 //
+// Dzielenie tablic
 //Dana jest tablica liczb całkowitych, T1, o długości n. Napisz program, który na wejściu
 //otrzymuje wartości T1 i dzieli ją na dwie tablice, T2 i T3, tak, by w jednej z nich znalazły
 //się elementy parzyste a w drugiej nieparzyste. Następnie posortuj obie tablice.

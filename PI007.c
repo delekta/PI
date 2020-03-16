@@ -1,6 +1,7 @@
 //
 // Created by Kamil Delekta on 12.03.2020.
 //
+// Macierze
 //Napisz program, który na wejściu otrzymuje macierz kwadratową i sprawdza, czy jest
 //ona trójkątna dolna. Macierz L jest dolnotrójkątna, jeżeli lij = 0 dla i < j (czyli nad
 //główną przekątną znajdują się elementy zerowe).
