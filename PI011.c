@@ -1,6 +1,6 @@
 // Liczby najierwsze
-// Dana jest liczba całkowita dodatnian. Napisz program, który znajduje wszystkie liczby
-// pierwsze mniejsze odn, których cyfry tworzą ciąg niemalejący
+// Dana jest liczba całkowita dodatnia n. Napisz program, który znajduje wszystkie liczby
+// pierwsze mniejsze od n, których cyfry tworzą ciąg niemalejący
 # include <stdio.h>
 int pierwsza(int num){
     if(num % 2 == 0) return 0;
