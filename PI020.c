@@ -9,116 +9,155 @@
 // linię złożoną z n liczbcałkowitych-przykładową kolejność instalacji pakietów.
 
 
-# include <stdio.h>
-# include <stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-typedef struct node{
+typedef struct vertex{
+    int idx;
     int val;
-    struct node *next;
-}node;
+    int visited;
+}vertex;
 
-void print(node* head){
-    node* curr = head;
 
-    while (curr != NULL){
-        printf("%d ", curr->val );
-        curr = curr->next;
-    }
-    printf("\n");
+typedef struct graph{
+    vertex *arr;
+}graph;
+
+struct Stack {
+    int top;
+    int size;
+    int* array;
+};
+
+
+struct Stack* create_stack(int size)
+{
+    struct Stack* stack = (struct Stack*)malloc(sizeof(struct Stack));
+    stack->top = -1;
+    stack->size = size;
+    stack->array = (int*)malloc(stack->size * sizeof(int));
+    return stack;
 }
 
-node* push_back(node *head, node* new){
-    node* curr = head;
-    if(curr == NULL){
-        head = new;
-    }
-    else{
-        while(curr -> next != NULL){
-            curr = curr -> next;
-        }
-        curr -> next = new;
-    }
+int pop(struct Stack* stack)
+{
 
-    return head;
+    int x=stack->array[stack->top];
+    stack->top--;
+    return x;
 }
 
-int dfs(node **graph, int *visited, int v){
-    visited[v] = 1;
-    node *neighbour = graph[v];
-    while(neighbour != NULL){
-        if(visited[neighbour -> val] == -1){
-            if(dfs(graph, visited, neighbour -> val) == 1){
-                return 1;
-            }
-        }
-        else if(visited[neighbour -> val] == 1){
-            return 1;
-        }
-        neighbour = neighbour -> next;
-    }
-    return 0;
+void push(struct Stack* stack, int v)
+{
+    stack->top++;
+    stack->array[stack->top] = v;
 }
 
-void dfs_print(node **graph, int *visited, int v){
-    visited[v] = 1;
-    printf("%d ", v);
-    node *neighbour = graph[v];
-    if(neighbour != NULL){
-        if(visited[neighbour -> val] == -1){
-            dfs_print(graph, visited, neighbour -> val);
-        }
-    }
+int is_empty(struct Stack* stack)
+{
+    if(stack->top==-1) return 1;
+    else return 0;
 }
 
-void has_cycle(node **graph, int *visited, int n){
-    for(int v = 0;v < n; v++){
-        if(visited[v] == -1){
-            if(dfs(graph, visited, v) == 1){
-                printf("CYCLE");
-                return;
-            }
+int dfs(graph graph, int **arr, int v, int n, int num)
+{
+    if(v==num && graph.arr[num].visited == 1) return 0;
+    graph.arr[v].visited = 1;
+
+    for(int i=0;i<n;i++)
+    {
+        if(arr[v][i] == 1)
+        {
+            if(dfs(graph,arr,i,n,num) == 0)
+                return 0;
         }
     }
-    printf("OK\n");
-    for(int i = 0; i < n; i++) visited[i] = -1;
+    return 1;
 
-    for(int v = 0;v < n; v++){
-        if(visited[v] == -1  && graph[v] != NULL){
-            dfs_print(graph, visited, v);
+}
+
+void topological_sort(graph graph, int **arr, struct Stack* stack, int v, int n)
+{
+    for(int i=0;i<n;i++)
+    {
+        if(arr[v][i] == 1 && graph.arr[i].visited==0)
+        {
+            topological_sort(graph,arr,stack,i,n);
+        }
+    }
+    push(stack,v);
+    graph.arr[v].visited = 1;
+}
+
+void has_cycle(graph graph, int ** array, int n){
+    for(int i=0;i<n;i++)
+    {
+        if(dfs(graph,array,i,n,i) == 0)
+        {
+            printf("CYCLE");
             return;
         }
+        for(int j=0;j<n;j++)
+        {
+            graph.arr[j].visited=0;
+        }
     }
 
+    printf("OK\n");
+    struct Stack* stack = create_stack(n);
+    for(int i=0;i<n;i++)
+    {
+        if(graph.arr[i].visited==0)
+            topological_sort(graph,array,stack,i,n);
+    }
+
+    while(is_empty(stack) == 0)
+        printf("%d ",pop(stack));
+
+    free(stack->array);
+    free(stack);
 }
 
-int main(){
-    int n, k;
-    scanf("%d %d", &n, &k);
 
-    node **graph = malloc(n * sizeof(node*));
+int main()
+{
+    int n,k;
 
-    for(int i = 0;i < n; i++) graph[i] = NULL;
+    graph graph;
+    scanf("%d %d",&n,&k);
 
-    for(int i = 0; i < k; i++){
+    int **array = malloc(n*sizeof(int*));
+    graph.arr = malloc(n*sizeof(vertex));
 
-        int a;
-        node *b = (node*)malloc((sizeof(node)));
-
-
-        scanf(" %d %d", &a, &(b -> val));
-        b -> next = NULL;
-
-        graph[a] = push_back(graph[a], b);
+    for(int i=0; i<n; i++)
+    {
+        array[i]=malloc(n*sizeof(int));
     }
 
-    int *visited = malloc(n * sizeof(int));
-    for(int i = 0; i < n; i++) visited[i] = -1;
-
-    has_cycle(graph, visited, n);
-
-    free(visited);
-    for(int i = 0; i < n; i++){
-        free(graph[i]);
+    for(int i=0; i<n; i++)
+    {
+        for (int j=0; j<n; j++)
+            array[i][j]=0;
     }
-    free(graph);
+
+    for(int i=0;i<k;i++)
+    {
+        int v1, v2;
+        scanf("%d %d",&v1,&v2);
+        array[v1][v2]=1;
+    }
+
+    for(int i=0;i<n;i++)
+    {
+        vertex v;
+        v.idx=i;
+        v.visited=0;
+        v.val=0;
+        graph.arr[i]=v;
+    }
+
+    has_cycle(graph, array, n);
+
+    free(graph.arr);
+    free(array);
 }
