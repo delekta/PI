@@ -13,8 +13,6 @@
 #include <stdlib.h>
 
 typedef struct vertex{
-    int idx;
-    int val;
     int visited;
 }vertex;
 
@@ -23,14 +21,14 @@ typedef struct graph{
     vertex *arr;
 }graph;
 
-struct Stack {
+typedef struct Stack {
     int top;
     int size;
     int* array;
-};
+}Stack;
 
 
-struct Stack* create_stack(int size)
+Stack* create_stack(int size)
 {
     struct Stack* stack = (struct Stack*)malloc(sizeof(struct Stack));
     stack->top = -1;
@@ -41,7 +39,6 @@ struct Stack* create_stack(int size)
 
 int pop(struct Stack* stack)
 {
-
     int x=stack->array[stack->top];
     stack->top--;
     return x;
@@ -59,16 +56,17 @@ int is_empty(struct Stack* stack)
     else return 0;
 }
 
-int dfs(graph graph, int **arr, int v, int n, int num)
+int dfs(graph graph, int **arr, int v, int n, int started)
 {
-    if(v==num && graph.arr[num].visited == 1) return 0;
+    // printf("%d %d\n", v, started);
+    if(v==started && graph.arr[started].visited == 1) return 0;
     graph.arr[v].visited = 1;
 
     for(int i=0;i<n;i++)
     {
         if(arr[v][i] == 1)
         {
-            if(dfs(graph,arr,i,n,num) == 0)
+            if(dfs(graph,arr,i,n,started) == 0)
                 return 0;
         }
     }
@@ -97,6 +95,7 @@ void has_cycle(graph graph, int ** array, int n){
             printf("CYCLE");
             return;
         }
+        // printf("%s", "end");
         for(int j=0;j<n;j++)
         {
             graph.arr[j].visited=0;
@@ -150,9 +149,7 @@ int main()
     for(int i=0;i<n;i++)
     {
         vertex v;
-        v.idx=i;
         v.visited=0;
-        v.val=0;
         graph.arr[i]=v;
     }
 
