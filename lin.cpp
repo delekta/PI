@@ -23,7 +23,12 @@ void euler(int u)
         graf[u].pop_front();
         euler(v);
     }
-
+    /*
+     * Dla eluerowskich lub póleulerowskich robisz wiadomo co, a jak nie jest graf takowy , to dorabiasz sobie wierzcholek,
+ ktory lączysz z wszystkimi nieparzystymi wierzcholkami i tak generujesz sztucznie graf ktory ma cykl eulera, sam nowy
+ wierzchilek ma parzysty stopien bo ilosc wierzcholkow o stopniu nieparzystym jest parzysta dla kazdego grafu, i teraz za
+ kazdym razem jak przechodzisz przez ten dodatkowy wierzcholek to dodajesz linie,
+     */
     if (!czy_euler && u == 0) {
         akt_linia++;
     } else {
@@ -96,7 +101,7 @@ int main() {
 
     while (Z > 0) {
         Z--;
-        
+
         przygotuj_graf();
 
         znajdz_linie();
